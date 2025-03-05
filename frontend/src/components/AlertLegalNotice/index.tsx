@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AlertTriangle, X } from "react-feather";
 
-export function Alert() {
+export function AlertLegalNotice() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
