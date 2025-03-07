@@ -1,4 +1,4 @@
-import getQuizOptionTheme from "@/utils/getQuizOptionTheme";
+import getQuizOptionTheme from "@/utils/style/getQuizOptionTheme";
 
 interface QuizOptionProps {
   index: number;
@@ -16,7 +16,7 @@ const QuizOption: React.FC<QuizOptionProps> = ({
   isCorrect = null,
 }) => {
   const theme = getQuizOptionTheme({index,selectedAnswerIndex, isCorrect})
-  
+
   return (
     <div className="relative mt-4 cursor-pointer">
       <input
