@@ -2,15 +2,11 @@ import { useEffect, useState } from 'react';
 import QuizOption from './QuizOption';
 import { Clock } from 'react-feather';
 import QuestionOptionsEnum from '@/ts/enum/QuestionOptionsEnum';
-import QuestionDetranInterface from '@/ts/interface/QuestionDetranInterface';
+import QuizInterface from '@/ts/interface/QuizInterface';
 
 interface QuizProps {
-  quiz: {
-    topic: string;
-    totalQuestions: number;
-    totalTime?: number; // in seconds, optional
-    questions: QuestionDetranInterface[];
-  };
+  quiz: QuizInterface;
+  onAnswer: (questionId: number, answer: QuestionOptionsEnum) => void;
 }
 
 type ValidOptions = Exclude<QuestionOptionsEnum, QuestionOptionsEnum.UNKNOW>;

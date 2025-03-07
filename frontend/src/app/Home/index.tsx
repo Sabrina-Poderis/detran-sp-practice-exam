@@ -1,10 +1,10 @@
-'use client';
+"use client"
 import images from '@/assets';
 import { Button } from '@/components/Button';
-import { FileText, Truck } from 'react-feather';
+import { FileText, Truck } from "react-feather";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import packageJson from '@/../package.json';
+import packageJson from "@/../package.json"; 
 
 export default function Home() {
   const router = useRouter();
@@ -33,33 +33,21 @@ export default function Home() {
               Simulado Detran SP
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-              Prepare-se para a prova teórica do Detran com nosso simulado
-              interativo.
+              Prepare-se para a prova teórica do Detran com nosso simulado interativo.
             </p>
 
             <div className="flex flex-col gap-4 w-full max-w-sm">
-              <Button
-                variant="primary"
-                icon={<FileText size={20} />}
-                onClick={() => router.push('/simulado')}
-              >
+              <Button variant="primary" icon={<FileText size={20} />} onClick={() => router.push("/simulado")}>
                 Iniciar Simulado
               </Button>
-              <Button
-                variant="primary"
-                icon={<Truck size={20} />}
-                onClick={() => router.push('/pratica')}
-              >
+              <Button variant="primary" icon={<Truck size={20} />} onClick={() => router.push("/pratica")}>
                 Praticar por Categorias
               </Button>
             </div>
           </div>
 
           <footer className="w-full text-center text-gray-600 dark:text-gray-400 pb-4">
-            <p>
-              &copy; {new Date().getFullYear()} Simulado Detran SP | v
-              {packageJson.version}
-            </p>
+            <p>&copy; {new Date().getFullYear()} Simulado Detran SP | v{packageJson.version}</p>
           </footer>
         </div>
       </div>

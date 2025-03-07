@@ -3,6 +3,7 @@
 
 import ApiResponseInterface from "@/ts/interface/ApiResponseInterface";
 import apiClient from "../apiClient";
+import QuestionDetranInterface from "@/ts/interface/QuestionDetranInterface";
 
 class SimulatedExamService {
   private readonly basePath = '/simulatedexam';
@@ -12,7 +13,7 @@ class SimulatedExamService {
     try {
       const response = await apiClient.post<{
         user_id: string;
-        questions: any[];
+        questions: QuestionDetranInterface[];
         time_limit: number;
       }>(this.basePath, { user_id, question_limit, checked });
 
