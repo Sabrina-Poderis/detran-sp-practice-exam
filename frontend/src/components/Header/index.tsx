@@ -23,10 +23,10 @@ const Header: React.FC<HeaderProps> = ({ title, description }) => {
 
   return (
     <header className="text-center">
-      <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+      <h1 className="text-4xl font-bold mb-6 text-gray-800 dark:text-white">
         {renderTitleWithMarks(title)}
       </h1>
-      <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+      <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
         {description}
       </p>
     </header>

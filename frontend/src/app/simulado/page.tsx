@@ -14,25 +14,26 @@ const SimuladoPage: React.FC = () => {
   const { showToast } = useToast();
 
   const [quiz, setQuiz] = useState<QuizInterface | null>(null);
-  const [userId] = useState<string | null>(null);
+  const [userId] = useState<string | null>('123');
   const [score, setScore] = useState<number>(0);
-  const [totalQuestions, setTotalQuestions] = useState<number>(0);
-  const [isQuizStarted, setIsQuizStarted] = useState<boolean>(false);
+  const [totalQuestions, ] = useState<number>(0);
+  // const [isQuizStarted, setIsQuizStarted] = useState<boolean>(false);
 
   useEffect(() => {
     if (userId) {
-      SimulatedExamService.getSimulatedExamByUserId(userId)
-        .then((response) => {
-          if (response.status === 200) {
-            setQuiz(response.data);
-            setTotalQuestions(response.data.questions.length);
-          } else {
-            showToast(ToastTypeEnum.ERROR, 'Erro ao carregar o simulado.');
-          }
-        })
-        .catch(() => {
-          showToast(ToastTypeEnum.ERROR, 'Erro ao carregar o simulado.');
-        });
+      handleStartQuiz()
+      // SimulatedExamService.getSimulatedExamByUserId(userId)
+      //   .then((response) => {
+      //     if (response.status === 200) {
+      //       setQuiz(response.data);
+      //       setTotalQuestions(response.data.questions.length);
+      //     } else {
+      //       showToast(ToastTypeEnum.ERROR, 'Erro ao carregar o simulado.');
+      //     }
+      //   })
+      //   .catch(() => {
+      //     showToast(ToastTypeEnum.ERROR, 'Erro ao carregar o simulado.');
+      //   });
     }
   }, [userId]);
 
@@ -42,10 +43,10 @@ const SimuladoPage: React.FC = () => {
       const response = await SimulatedExamService.createSimulatedExam(
         userId,
         quiz.questions.length,
-        false
+        false,
       );
       if (response.status === 201) {
-        setIsQuizStarted(true);
+        // setIsQuizStarted(true);
       } else {
         showToast(ToastTypeEnum.ERROR, 'Erro ao iniciar o simulado.');
       }
@@ -87,30 +88,26 @@ const SimuladoPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <Header
-        title="Simulado"
-        description="Teste seus conhecimentos com este simulado."
-      />
+    <div
+      className="relative z-10 bg-white dark:bg-gray-900 text-gray-900 dark:text-white 
+        p-8 shadow-lg flex flex-col items-center justify-center text-center
+        w-full h-screen"
+    >
+      <div className="flex flex-col items-center justify-center flex-grow">
+        <Header
+          title="Simulado Detran SP"
+          description="Teste seus conhecimentos com este simulado."
+        />
 
-      {/* {feedbackMessage && <FeedbackMessage message={feedbackMessage} />} */}
-
-      {!isQuizStarted ? (
-        <div className="mt-4">
-          <Button onClick={handleStartQuiz} variant="primary" size="md">
-            Iniciar Simulado
-          </Button>
-        </div>
-      ) : (
         <div>
           <Quiz quiz={quiz!} onAnswer={handleAnswerQuestion} />
-          <div className="mt-4">
+          <div className="mt-4 flex justify-end">
             <Button onClick={handleSubmitResults} variant="secondary" size="md">
               Enviar Resultado
             </Button>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
