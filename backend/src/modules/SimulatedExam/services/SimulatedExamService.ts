@@ -1,5 +1,4 @@
 import QuestionDetranService from '@modules/QuestionDetran/services/QuestionDetranService';
-import ResultsRepository from '@modules/Results/repositories/ResultsRepository';
 import SimulatedExamAnswerInterface from '@modules/SimulatedExam/ts/interfaces/SimulatedExamAnswerInterface';
 import QuestionDetranMessagesEnum from '@modules/QuestionDetran/ts/enums/QuestionDetranMessagesEnum';
 
@@ -10,8 +9,8 @@ class SimulatedExamService {
     this.questionService = new QuestionDetranService();
   }
 
-  async startExam(userId: string) {
-    const questions = await this.questionService.getRandomQuestions(10); 
+  async startExam(userId: string, qtdQuestions: number = 10) {
+    const questions = await this.questionService.getRandomQuestions(qtdQuestions); 
 
     if(questions){
       return { userId, questions, startTime: new Date() };
@@ -38,8 +37,6 @@ class SimulatedExamService {
       total_questions: questions.length,
       created_at: new Date(),
     };
-
-    await ResultsRepository.saveResult(result);
 
     return result;
   }

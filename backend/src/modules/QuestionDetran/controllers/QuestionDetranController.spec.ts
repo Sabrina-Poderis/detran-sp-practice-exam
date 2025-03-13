@@ -29,7 +29,7 @@ describe('QuestionDetranController', () => {
 
   describe('getAllQuestions', () => {
     it('deve retornar todas as questões', async () => {
-      reqMock = { query: { checked: 'true' } };
+      reqMock = { query: { verified: 'true' } };
       serviceMock.getAllQuestions.mockResolvedValue({ data: [] });
 
       await controller.getAllQuestions(reqMock as Request, resMock as Response);
@@ -56,8 +56,11 @@ describe('QuestionDetranController', () => {
     it('deve retornar a questão se o ID for válido', async () => {
       const mockQuestion = {
         id: 1,
+        _id: {
+          $oid: '1111'
+        },
         type: QuestionTypeEnum.PLACAS_DE_TRANSITO,
-        checked: true,
+        verified: true,
         answer: QuestionOptionsEnum.A,
         question: 'Question 1',
         options: {
@@ -107,7 +110,7 @@ describe('QuestionDetranController', () => {
 
   describe('getQuestionsByType', () => {
     it('deve retornar todas as questões de um tipo válido', async () => {
-      reqMock = { params: { type: 'PLACAS_DE_TRANSITO' }, query: { checked: 'false' } };
+      reqMock = { params: { type: 'PLACAS_DE_TRANSITO' }, query: { verified: 'false' } };
       serviceMock.getQuestionsByType.mockResolvedValue({ data: [] });
 
       await controller.getQuestionsByType(reqMock as Request, resMock as Response);

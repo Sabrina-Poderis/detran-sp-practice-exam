@@ -1,125 +1,117 @@
-import { mock, MockProxy } from 'jest-mock-extended';
-import QuestionsDetranRepository from '@modules/QuestionDetran/repositories/QuestionsDetranRepository';
 import QuestionDetranService from '@modules/QuestionDetran/services/QuestionDetranService';
 import QuestionDetranMessagesEnum from '@modules/QuestionDetran/ts/enums/QuestionDetranMessagesEnum';
 import QuestionTypeEnum from '@modules/QuestionDetran/ts/enums/QuestionTypeEnum';
-import QuestionOptionsEnum from '@modules/QuestionDetran/ts/enums/QuestionOptionsEnum';
-import QuestionDetranInterface from '@modules/QuestionDetran/ts/interfaces/QuestionDetranInterface';
+import QuestionsDetranMock from '@shared/QuestionsDetranMock';
+import QuestionDetranInterface from '../ts/interfaces/QuestionDetranInterface';
+import QuestionOptionsEnum from '../ts/enums/QuestionOptionsEnum';
+
+jest.mock('@shared/QuestionsDetranMock');
 
 describe('QuestionDetranService', () => {
   let service: QuestionDetranService;
-  let repositoryMock: MockProxy<QuestionsDetranRepository>;
-
-  beforeEach(() => {
-    repositoryMock = mock<QuestionsDetranRepository>();
-    service = new QuestionDetranService();
-    (service as any).questionRepository = repositoryMock; // Substitui o repositório real pelo mock
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
 
   const mockQuestions: QuestionDetranInterface[] = [
     {
       id: 1,
       type: QuestionTypeEnum.PLACAS_DE_TRANSITO,
-      checked: true,
+      verified: true,
       answer: QuestionOptionsEnum.A,
       question: 'Question 1',
-      options: {
-        A: 'Option A',
-        B: 'Option B',
-        C: 'Option C',
-        D: 'Option D',
-      },
+      options: { A: 'Option A', B: 'Option B', C: 'Option C', D: 'Option D' },
+      _id: {
+        $oid: '1111'
+      }
     },
     {
       id: 2,
       type: QuestionTypeEnum.LEGISLACAO,
-      checked: false,
+      verified: false,
       answer: QuestionOptionsEnum.B,
       question: 'Question 2',
-      options: {
-        A: 'Option A',
-        B: 'Option B',
-        C: 'Option C',
-        D: 'Option D',
-      },
+      options: { A: 'Option A', B: 'Option B', C: 'Option C', D: 'Option D' },
+      _id: {
+        $oid: '2222'
+      }
+    },
+    {
+      id: 3,
+      type: QuestionTypeEnum.PLACAS_DE_TRANSITO,
+      verified: true,
+      answer: QuestionOptionsEnum.C,
+      question: 'Question 3',
+      options: { A: 'Option A', B: 'Option B', C: 'Option C', D: 'Option D' },
+      _id: {
+        $oid: '333'
+      }
     },
   ];
 
-  describe('getAllQuestions', () => {
-    it('deve retornar todas as questões filtrando corretamente', async () => {
-      repositoryMock.findAll.mockResolvedValue(mockQuestions);
+  beforeEach(() => {
+    service = new QuestionDetranService();
+    // Mock do retorno da função readData
+    (QuestionsDetranMock as unknown as jest.Mock).mockReturnValue(mockQuestions);
+  });
 
-      const result = await service.getAllQuestions();
-      expect(result).toEqual({ data: mockQuestions });
-      expect(repositoryMock.findAll).toHaveBeenCalledWith(false);
+  describe('getAllQuestions', () => {
+    it('deve retornar todas as questões filtradas corretamente pelo "verified"', async () => {
+      const result = await service.getAllQuestions(true);
+      expect(result.data).toEqual([mockQuestions[0], mockQuestions[2]]);
     });
 
-    it('deve lançar um erro interno ao falhar', async () => {
-      repositoryMock.findAll.mockRejectedValue(new Error('DB error'));
-
-      await expect(service.getAllQuestions()).rejects.toThrow(
-        QuestionDetranMessagesEnum.INTERNAL_SERVER_ERROR
-      );
+    it('deve retornar lista vazia se não houver questões com o valor "verified" desejado', async () => {
+      const result = await service.getAllQuestions(false);
+      expect(result.data).toEqual([mockQuestions[1]]);
     });
   });
 
   describe('getQuestionById', () => {
     it('deve retornar a questão correspondente ao ID', async () => {
-      repositoryMock.findById.mockResolvedValue(mockQuestions[0]);
-
       const result = await service.getQuestionById(1);
-      expect(result).toEqual({ data: mockQuestions[0] });
-      expect(repositoryMock.findById).toHaveBeenCalledWith(1);
+      expect(result.data).toEqual(mockQuestions[0]);
     });
 
-    it('deve retornar mensagem de não encontrado se a questão não existir', async () => {
-      repositoryMock.findById.mockResolvedValue(null);
-
+    it('deve retornar mensagem de erro se a questão não for encontrada', async () => {
       const result = await service.getQuestionById(999);
-      expect(result).toEqual({ data: null, message: QuestionDetranMessagesEnum.QUESTION_NOT_FOUND });
-      expect(repositoryMock.findById).toHaveBeenCalledWith(999);
-    });
-
-    it('deve lançar um erro interno ao falhar', async () => {
-      repositoryMock.findById.mockRejectedValue(new Error('DB error'));
-
-      await expect(service.getQuestionById(1)).rejects.toThrow(
-        QuestionDetranMessagesEnum.INTERNAL_SERVER_ERROR
-      );
+      expect(result.data).toBeNull();
+      expect(result.message).toEqual(QuestionDetranMessagesEnum.QUESTION_NOT_FOUND);
     });
   });
 
   describe('getQuestionsByType', () => {
-    it('deve retornar todas as questões de um tipo válido', async () => {
-      repositoryMock.findByType.mockResolvedValue([mockQuestions[0]]);
-
+    it('deve retornar as questões do tipo correto', async () => {
       const result = await service.getQuestionsByType(QuestionTypeEnum.PLACAS_DE_TRANSITO);
-      expect(result).toEqual({ data: [mockQuestions[0]] });
-      expect(repositoryMock.findByType).toHaveBeenCalledWith(QuestionTypeEnum.PLACAS_DE_TRANSITO, false);
+      expect(result.data).toEqual([mockQuestions[0], mockQuestions[2]]);
     });
 
-    it('deve retornar lista vazia e mensagem de erro se o tipo for inválido', async () => {
+    it('deve retornar mensagem de erro se o tipo for inválido', async () => {
       const result = await service.getQuestionsByType('INVALID_TYPE');
-      expect(result).toEqual({ data: [], message: QuestionDetranMessagesEnum.INVALID_TYPE_ERROR });
+      expect(result.data).toEqual([]);
+      expect(result.message).toEqual(QuestionDetranMessagesEnum.INVALID_TYPE_ERROR);
+    });
+  });
+
+  describe('getRandomQuestions', () => {
+    it('deve retornar uma lista aleatória de questões', async () => {
+      const result = await service.getRandomQuestions(2, true);
+      expect(result.length).toBe(2);
+      expect(result).toEqual(expect.arrayContaining([mockQuestions[0], mockQuestions[2]]));
     });
 
-    it('deve retornar lista vazia se não houver questões do tipo especificado', async () => {
-      repositoryMock.findByType.mockResolvedValue([]);
+    it('deve retornar lista vazia se não houver questões "verified"', async () => {
+      const result = await service.getRandomQuestions(1, false);
+      expect(result.length).toBe(1);
+      expect(result[0]).toEqual(mockQuestions[1]);
+    });
+  });
 
-      const result = await service.getQuestionsByType(QuestionTypeEnum.LEGISLACAO);
-      expect(result).toEqual({ data: [] });
+  describe('getQuestionsByIds', () => {
+    it('deve retornar as questões correspondentes aos IDs', async () => {
+      const result = await service.getQuestionsByIds([1, 3]);
+      expect(result).toEqual([mockQuestions[0], mockQuestions[2]]);
     });
 
-    it('deve lançar um erro interno ao falhar', async () => {
-      repositoryMock.findByType.mockRejectedValue(new Error('DB error'));
-
-      await expect(service.getQuestionsByType(QuestionTypeEnum.LEGISLACAO)).rejects.toThrow(
-        QuestionDetranMessagesEnum.INTERNAL_SERVER_ERROR
-      );
+    it('deve lançar erro se nenhuma questão for encontrada', async () => {
+      await expect(service.getQuestionsByIds([999])).rejects.toThrow(QuestionDetranMessagesEnum.QUESTIONS_NOT_FOUND);
     });
   });
 });

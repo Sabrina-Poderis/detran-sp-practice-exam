@@ -4,8 +4,8 @@ import SimulatedExamService from '@modules/SimulatedExam/services/SimulatedExamS
 class SimulatedExamController {
   async startExam(req: Request, res: Response): Promise<Response> {
     try {
-      const { userId } = req.body;
-      const exam = await SimulatedExamService.startExam(userId);
+      const { userId, qtdQuestions } = req.body;
+      const exam = await SimulatedExamService.startExam(userId, qtdQuestions);
       return res.status(200).json(exam);
     } catch (error: any) {
       return res.status(400).json({ message: error.message });

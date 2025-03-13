@@ -11,8 +11,8 @@ export default class QuestionDetranController {
 
   async getAllQuestions(req: Request, res: Response): Promise<void> {
     try {
-      const checked = req.query?.checked === 'true';
-      const result = await this.questionService.getAllQuestions(checked);
+      const verified = req.query?.verified === 'true';
+      const result = await this.questionService.getAllQuestions(verified);
       res.status(200).json(result);
     } catch (error) {
       res.status(500).json({ data: null, message: QuestionDetranMessagesEnum.INTERNAL_SERVER_ERROR });
@@ -43,9 +43,9 @@ export default class QuestionDetranController {
   async getQuestionsByType(req: Request, res: Response): Promise<void> {
     try {
       const type = req.params.type;
-      const checked = req.query?.checked === 'true';
+      const verified = req.query?.verified === 'true';
 
-      const result = await this.questionService.getQuestionsByType(type, checked);
+      const result = await this.questionService.getQuestionsByType(type, verified);
      
       if (result.message === QuestionDetranMessagesEnum.INVALID_TYPE_ERROR) {
         res.status(400).json(result);

@@ -3,6 +3,9 @@ import QuestionOptionsEnum from "@modules/QuestionDetran/ts/enums/QuestionOption
 
 export default interface QuestionDetranInterface {
   id: number;
+  _id: {
+    $oid: string;
+  };
   question: string;
   options: {
     A: string;
@@ -12,5 +15,5 @@ export default interface QuestionDetranInterface {
   };
   answer: QuestionOptionsEnum;
   type: QuestionTypeEnum;
-  checked?: boolean;
+  verified?: boolean;
 }
