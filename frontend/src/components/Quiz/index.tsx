@@ -29,7 +29,6 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    debugger;
     if (quiz?.questions) {
       setQuestions(quiz.questions);
       setLoading(false);
@@ -42,6 +41,15 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
       return () => clearInterval(countdown);
     }
   }, [timer]);
+
+  const onClickPrevious = () => {
+    setSelectedAnswer(null);
+    if (questions && activeQuestionIndex > 0) {
+      setActiveQuestionIndex((prev) => prev - 1);
+    } else {
+      setActiveQuestionIndex(0);
+    }
+  };
 
   const onClickNext = () => {
     setSelectedAnswer(null);
@@ -88,15 +96,16 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
       <form>
         {(Object.keys(currentQuestion.options) as Array<keyof typeof currentQuestion.options>).map(
           (key, index) => {
-            const option = currentQuestion.options[key];
+            const optionText = currentQuestion.options[key];
             const optionKey = key as QuestionOptionsEnum;
-            const isCorrect = quiz?.topic === "SIMULADO" ? null : option === currentQuestion.answer;
+            const isCorrect = quiz?.topic === "SIMULADO" ? null : optionText === currentQuestion.answer;
 
             return (
               <QuizOption
                 key={optionKey}
                 index={index}
-                answer={option}
+                questionIndex={optionKey}
+                answerText={optionText}
                 selectedAnswerIndex={
                   selectedAnswer && selectedAnswer !== QuestionOptionsEnum.UNKNOW
                     ? optionIndexMap[selectedAnswer as ValidOptions]
@@ -109,13 +118,23 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
           }
         )}
       </form>
-      <div className="flex justify-end">
+      <div className={`flex ${activeQuestionIndex > 0 ? "justify-between" : "justify-end"}`}>
+        {activeQuestionIndex > 0 && (
+          <button
+            onClick={onClickPrevious}
+            disabled={selectedAnswer === null}
+            className="mt-12 min-w-[150px] transform cursor-pointer rounded-lg border border-[#38bdf8] bg-[#38bdf8] px-5 py-1.5 text-lg font-semibold text-white outline-none transition duration-300 ease-in-out hover:scale-105 hover:bg-[#1d4ed8] active:scale-95 active:bg-[#1e40af] disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-800 disabled:text-gray-500 disabled:hover:scale-100"
+          >
+            Anterior
+          </button>
+        )}
+
         <button
           onClick={onClickNext}
           disabled={selectedAnswer === null}
           className="mt-12 min-w-[150px] transform cursor-pointer rounded-lg border border-[#38bdf8] bg-[#38bdf8] px-5 py-1.5 text-lg font-semibold text-white outline-none transition duration-300 ease-in-out hover:scale-105 hover:bg-[#1d4ed8] active:scale-95 active:bg-[#1e40af] disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-800 disabled:text-gray-500 disabled:hover:scale-100"
         >
-          {activeQuestionIndex === questions.length - 1 ? "Finish" : "Next"}
+          {activeQuestionIndex === questions.length - 1 ? "Finalizar simulado" : "Próxima"}
         </button>
       </div>
     </div>

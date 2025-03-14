@@ -1,8 +1,10 @@
+import QuestionOptionsEnum from "@/ts/enum/QuestionOptionsEnum";
 import getQuizOptionTheme from "@/utils/style/getQuizOptionTheme";
 
 interface QuizOptionProps {
   index: number;
-  answer: string;
+  questionIndex: QuestionOptionsEnum;
+  answerText: string;
   selectedAnswerIndex: number | null;
   onAnswerSelected: (answer: string, index: number) => void;
   isCorrect?: boolean | null;
@@ -10,30 +12,31 @@ interface QuizOptionProps {
 
 const QuizOption: React.FC<QuizOptionProps> = ({
   index,
-  answer,
+  questionIndex,
+  answerText,
   selectedAnswerIndex,
   onAnswerSelected,
   isCorrect = null,
 }) => {
-  const theme = getQuizOptionTheme({index,selectedAnswerIndex, isCorrect})
+  const theme = getQuizOptionTheme({index, selectedAnswerIndex, isCorrect})
 
   return (
     <div className="relative mt-4 cursor-pointer">
       <input
         type="radio"
-        id={`choice-${index}`}
+        id={`choice-${questionIndex}`}
         name="quiz"
-        value={answer}
+        value={questionIndex}
         checked={selectedAnswerIndex === index}
-        onChange={() => onAnswerSelected(answer, index)}
+        onChange={() => onAnswerSelected(questionIndex, index)}
         className="hidden"
       />
       <label
-        htmlFor={`choice-${index}`}
+        htmlFor={`choice-${questionIndex}`}
         className="block cursor-pointer rounded-lg border px-4 py-3 text-lg text-white transition-colors duration-300 ease-in-out"
         style={{ borderColor: theme.borderColor, backgroundColor: theme.bgColor }}
       >
-        {answer}
+        {answerText}
       </label>
     </div>
   );
