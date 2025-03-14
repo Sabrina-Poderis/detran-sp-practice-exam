@@ -8,13 +8,14 @@ import QuestionDetranInterface from "@/ts/interface/QuestionDetranInterface";
 class SimulatedExamService {
   private readonly basePath = '/simulated-exam';
 
-  // Método para criar um novo simulado
-  async startSimulatedExam(question_limit: number, verified: boolean): Promise<ApiResponseInterface<any>> {
+  async startSimulatedExam(qtdQuestions: number, verified: boolean): Promise<ApiResponseInterface<any>> {
     try {
+      const query = verified !== undefined ? `?verified=${verified}` : '';
+      
       const response = await apiClient.post<{
         questions: QuestionDetranInterface[];
         time_limit: number;
-      }>(`${this.basePath}/start`, { question_limit, verified });
+      }>(`${this.basePath}/start${query}`, { qtdQuestions });
 
       return {
         status: 201,

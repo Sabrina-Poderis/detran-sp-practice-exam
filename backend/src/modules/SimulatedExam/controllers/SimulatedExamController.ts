@@ -4,6 +4,7 @@ import SimulatedExamService from '@modules/SimulatedExam/services/SimulatedExamS
 class SimulatedExamController {
   async startExam(req: Request, res: Response): Promise<Response> {
     try {
+      const verified = req.query?.verified === 'true';
       const { qtdQuestions } = req.body;
       const exam = await SimulatedExamService.startExam(qtdQuestions);
       return res.status(200).json(exam);
