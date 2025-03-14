@@ -1,8 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import ResultsService from '@/services/ResultsService';
 import SimulatedExamService from '@/services/SimulatedExamService';
-import { Button } from '@/components/Button';
 import Header from '@/components/Header';
 import QuestionOptionsEnum from '@/ts/enum/QuestionOptionsEnum';
 import Quiz from '@/components/Quiz';
@@ -14,60 +12,49 @@ const SimuladoPage: React.FC = () => {
   const { showToast } = useToast();
 
   const [quiz, setQuiz] = useState<QuizInterface | null>(null);
-  const [userId] = useState<string | null>('123');
-  const [score, setScore] = useState<number>(0);
-  const [totalQuestions, ] = useState<number>(0);
-  // const [isQuizStarted, setIsQuizStarted] = useState<boolean>(false);
+  const [/* score */, setScore] = useState<number>(0);
+  // const [totalQuestions] = useState<number>(0);
+  const [isQuizStarted, setIsQuizStarted] = useState<boolean>(false);
 
   useEffect(() => {
-    if (userId) {
-      handleStartQuiz()
-      // SimulatedExamService.getSimulatedExamByUserId(userId)
-      //   .then((response) => {
-      //     if (response.status === 200) {
-      //       setQuiz(response.data);
-      //       setTotalQuestions(response.data.questions.length);
-      //     } else {
-      //       showToast(ToastTypeEnum.ERROR, 'Erro ao carregar o simulado.');
-      //     }
-      //   })
-      //   .catch(() => {
-      //     showToast(ToastTypeEnum.ERROR, 'Erro ao carregar o simulado.');
-      //   });
+    if (!isQuizStarted) {
+      handleStartQuiz();
     }
-  }, [userId]);
+  }, [isQuizStarted]);
 
   // Handle the quiz start
   const handleStartQuiz = async () => {
-    if (userId && quiz) {
-      const response = await SimulatedExamService.createSimulatedExam(
-        userId,
-        quiz.questions.length,
-        false,
-      );
-      if (response.status === 201) {
-        // setIsQuizStarted(true);
-      } else {
-        showToast(ToastTypeEnum.ERROR, 'Erro ao iniciar o simulado.');
-      }
+    const response = await SimulatedExamService.startSimulatedExam(
+      40,
+      true,
+    );
+    if (response.status === 201) {
+      setIsQuizStarted(true);
+      setQuiz({
+        topic: 'SIMULADO',
+        totalQuestions: 40,
+        totalTime: 3600,
+        questions: response.data.questions
+      })
+    } else {
+      showToast(ToastTypeEnum.ERROR, 'Erro ao iniciar o simulado.');
     }
   };
 
   // Handle the quiz finish and submit the results
-  const handleSubmitResults = async () => {
-    if (userId && score !== undefined && totalQuestions) {
-      const response = await ResultsService.createResult(
-        userId,
-        score,
-        totalQuestions,
-      );
-      if (response.status === 201) {
-        showToast(ToastTypeEnum.ERROR, 'Resultado enviado com sucesso!');
-      } else {
-        showToast(ToastTypeEnum.ERROR, 'Erro ao enviar o resultado.');
-      }
-    }
-  };
+  // const handleSubmitResults = async () => {
+    // if (score !== undefined && totalQuestions) {
+    //   const response = await ResultsService.createResult(
+    //     score,
+    //     totalQuestions,
+    //   );
+    //   if (response.status === 201) {
+    //     showToast(ToastTypeEnum.ERROR, 'Resultado enviado com sucesso!');
+    //   } else {
+    //     showToast(ToastTypeEnum.ERROR, 'Erro ao enviar o resultado.');
+    //   }
+    // }
+  // };
 
   // Update the score when a question is answered
   const handleAnswerQuestion = (
@@ -101,11 +88,6 @@ const SimuladoPage: React.FC = () => {
 
         <div>
           <Quiz quiz={quiz!} onAnswer={handleAnswerQuestion} />
-          <div className="mt-4 flex justify-end">
-            <Button onClick={handleSubmitResults} variant="secondary" size="md">
-              Enviar Resultado
-            </Button>
-          </div>
         </div>
       </div>
     </div>

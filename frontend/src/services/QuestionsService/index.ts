@@ -7,9 +7,9 @@ import apiClient from "../apiClient";
 class QuestionsService {
   private readonly basePath = '/questions';
 
-  async getAllQuestions(checked?: boolean): Promise<ApiResponseInterface<QuestionDetranInterface[]>> {
+  async getAllQuestions(verified?: boolean): Promise<ApiResponseInterface<QuestionDetranInterface[]>> {
     try {
-      const query = checked !== undefined ? `?checked=${checked}` : '';
+      const query = verified !== undefined ? `?checked=${verified}` : '';
       const response = await apiClient.get<{ data: QuestionDetranInterface[] }>(`${this.basePath}/${query}`);
       return {
         status: 200,
@@ -38,9 +38,9 @@ class QuestionsService {
     }
   }
 
-  async getQuestionsByType(type: string, checked?: boolean): Promise<ApiResponseInterface<QuestionDetranInterface[]>> {
+  async getQuestionsByType(type: string, verified?: boolean): Promise<ApiResponseInterface<QuestionDetranInterface[]>> {
     try {
-      const query = checked !== undefined ? `?checked=${checked}` : '';
+      const query = verified !== undefined ? `?verified=${verified}` : '';
       const response = await apiClient.get<{ data: QuestionDetranInterface[] }>(`${this.basePath}/type/${type}${query}`);
       return {
         status: 200,

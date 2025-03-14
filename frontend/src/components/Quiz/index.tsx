@@ -29,6 +29,7 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    debugger;
     if (quiz?.questions) {
       setQuestions(quiz.questions);
       setLoading(false);

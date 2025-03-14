@@ -13,7 +13,8 @@
       "forceConsistentCasingInFileNames": true,
       "paths": {
         "@modules/*": ["modules/*"],
-        "@shared/*": ["shared/*"]
+        "@shared/*": ["shared/*"],
+        "@middleware/*": ["middleware/*"]
       }
     },
     "include": ["src/**/*"],

@@ -9,16 +9,16 @@ class SimulatedExamService {
     this.questionService = new QuestionDetranService();
   }
 
-  async startExam(userId: string, qtdQuestions: number = 10) {
+  async startExam(qtdQuestions: number = 10) {
     const questions = await this.questionService.getRandomQuestions(qtdQuestions); 
 
     if(questions){
-      return { userId, questions, startTime: new Date() };
+      return { questions, startTime: new Date() };
     }
     throw new Error(QuestionDetranMessagesEnum.INTERNAL_SERVER_ERROR); 
   }
 
-  async submitExam(userId: string, answers: SimulatedExamAnswerInterface[]) {
+  async submitExam(answers: SimulatedExamAnswerInterface[]) {
     const questions = await this.questionService.getQuestionsByIds(
       answers.map((answer) => answer.questionId)
     );
@@ -32,7 +32,6 @@ class SimulatedExamService {
     });
 
     const result = {
-      user_id: userId,
       score,
       total_questions: questions.length,
       created_at: new Date(),
