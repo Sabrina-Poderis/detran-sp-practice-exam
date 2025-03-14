@@ -1,6 +1,8 @@
 import QuestionDetranService from '@modules/QuestionDetran/services/QuestionDetranService';
 import SimulatedExamAnswerInterface from '@modules/SimulatedExam/ts/interfaces/SimulatedExamAnswerInterface';
 import QuestionDetranMessagesEnum from '@modules/QuestionDetran/ts/enums/QuestionDetranMessagesEnum';
+import SimulatedExamInterfaceResponse from '../ts/interfaces/SimulatedExamInterface';
+import QuestionDetranInterface from '@modules/QuestionDetran/ts/interfaces/QuestionDetranInterface';
 
 class SimulatedExamService {
   private questionService: QuestionDetranService;
@@ -9,16 +11,16 @@ class SimulatedExamService {
     this.questionService = new QuestionDetranService();
   }
 
-  async startExam(qtdQuestions: number = 10) {
+  async startExam(qtdQuestions: number = 10): Promise<Omit<QuestionDetranInterface, 'answer'>[]> {
     const questions = await this.questionService.getRandomQuestions(qtdQuestions); 
 
     if(questions){
-      return { questions, startTime: new Date() };
+      return questions;
     }
     throw new Error(QuestionDetranMessagesEnum.INTERNAL_SERVER_ERROR); 
   }
 
-  async submitExam(answers: SimulatedExamAnswerInterface[]) {
+  async submitExam(answers: SimulatedExamAnswerInterface[]): Promise<SimulatedExamInterfaceResponse> {
     const questions = await this.questionService.getQuestionsByIds(
       answers.map((answer) => answer.questionId)
     );

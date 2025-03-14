@@ -66,12 +66,13 @@ export default class QuestionDetranService {
   async getRandomQuestions(
     limit: number,
     verified = false
-  ): Promise<QuestionDetranInterface[]> {
-    const questions = this.readData().filter((q) =>
-      this.filterVerified(q, verified)
-    );
+  ): Promise<Omit<QuestionDetranInterface, 'answer'>[]> {
+    const questions = this.readData()
+      .filter((q) => this.filterVerified(q, verified))
+      .map(({ answer, ...rest }) => rest);
+  
     return questions.sort(() => 0.5 - Math.random()).slice(0, limit);
-  }
+  }  
 
   async getQuestionsByIds(
     ids: number[],

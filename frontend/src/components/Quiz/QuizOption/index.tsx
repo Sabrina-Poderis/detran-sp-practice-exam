@@ -4,6 +4,7 @@ import getQuizOptionTheme from "@/utils/style/getQuizOptionTheme";
 interface QuizOptionProps {
   index: number;
   questionIndex: QuestionOptionsEnum;
+  questionId: number;
   answerText: string;
   selectedAnswerIndex: number | null;
   onAnswerSelected: (answer: string, index: number) => void;
@@ -13,6 +14,7 @@ interface QuizOptionProps {
 const QuizOption: React.FC<QuizOptionProps> = ({
   index,
   questionIndex,
+  questionId,
   answerText,
   selectedAnswerIndex,
   onAnswerSelected,
@@ -28,7 +30,7 @@ const QuizOption: React.FC<QuizOptionProps> = ({
         name="quiz"
         value={questionIndex}
         checked={selectedAnswerIndex === index}
-        onChange={() => onAnswerSelected(questionIndex, index)}
+        onChange={() => onAnswerSelected(questionIndex, questionId)}
         className="hidden"
       />
       <label

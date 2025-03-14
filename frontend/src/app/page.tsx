@@ -2,7 +2,7 @@
 'use client';
 import images from '@/assets';
 import { Button } from '@/components/Button';
-import { FileText, Truck } from 'react-feather';
+import { FileText, /**Truck */ } from 'react-feather';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import packageJson from '@/../package.json';
@@ -45,13 +45,14 @@ export default function Home() {
               >
                 Iniciar Simulado
               </Button>
-              <Button
+              {/* <Button
                 variant="primary"
+                disabled
                 icon={<Truck size={20} />}
                 onClick={() => router.push('/pratica')}
               >
                 Praticar por Categorias
-              </Button>
+              </Button> */}
             </div>
           </div>
 
