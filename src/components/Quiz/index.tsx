@@ -105,7 +105,7 @@ const Quiz: React.FC<QuizProps> = ({ quiz, onAnswer }) => {
           </div>
         )}
       </div>
-      <h3 className="my-4 text-lg font-medium text-justify">{currentQuestion.question}</h3>
+      <h3 className="text-lg font-medium text-justify">{currentQuestion.question}</h3>
       <form>
         {(
           Object.keys(currentQuestion.options) as Array<
@@ -141,7 +141,7 @@ const Quiz: React.FC<QuizProps> = ({ quiz, onAnswer }) => {
         <button
           onClick={onClickPrevious}
           disabled={activeQuestionIndex === 0}
-          className="mt-6 min-w-[150px] transform cursor-pointer rounded-lg border border-[#38bdf8] bg-[#38bdf8] px-5 py-1.5 text-lg font-semibold text-white outline-none transition duration-300 ease-in-out hover:scale-105 hover:bg-[#1d4ed8] active:scale-95 active:bg-[#1e40af] disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-800 disabled:text-gray-500 disabled:hover:scale-100"
+          className="mt-4 min-w-[150px] transform cursor-pointer rounded-lg border border-[#38bdf8] bg-[#38bdf8] px-5 py-1.5 text-md font-semibold text-white outline-none transition duration-300 ease-in-out hover:scale-105 hover:bg-[#1d4ed8] active:scale-95 active:bg-[#1e40af] disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-800 disabled:text-gray-500 disabled:hover:scale-100"
         >
           Anterior
         </button>
@@ -149,7 +149,7 @@ const Quiz: React.FC<QuizProps> = ({ quiz, onAnswer }) => {
         <button
           onClick={onClickNext}
           disabled={activeQuestionIndex === questions.length - 1}
-          className="mt-6 min-w-[150px] transform cursor-pointer rounded-lg border border-[#38bdf8] bg-[#38bdf8] px-5 py-1.5 text-lg font-semibold text-white outline-none transition duration-300 ease-in-out hover:scale-105 hover:bg-[#1d4ed8] active:scale-95 active:bg-[#1e40af] disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-800 disabled:text-gray-500 disabled:hover:scale-100"
+          className="mt-4 min-w-[150px] transform cursor-pointer rounded-lg border border-[#38bdf8] bg-[#38bdf8] px-5 py-1.5 text-md font-semibold text-white outline-none transition duration-300 ease-in-out hover:scale-105 hover:bg-[#1d4ed8] active:scale-95 active:bg-[#1e40af] disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-800 disabled:text-gray-500 disabled:hover:scale-100"
         >
           Próxima
         </button>

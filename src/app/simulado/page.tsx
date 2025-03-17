@@ -88,11 +88,9 @@ const SimuladoPage: React.FC = () => {
     >
       {/* Container com altura de 80% da tela */}
       <div className="flex flex-col items-center justify-center w-full max-w-3xl px-4 mx-auto min-h-[80vh]">
-        <div className="flex w-full justify-between align-center my-4 h-12">
+        <div className="flex w-full justify-between align-center my-4">
           <Header title="Simulado Detran SP" />
-          <div className='w-[240px]'>
-            <Button onClick={handleSubmitResults}>Enviar Resultado</Button>
-          </div>
+          <Button onClick={handleSubmitResults}>Enviar Resultado</Button>
         </div>
         <div className="w-full">
           {quiz && <Quiz quiz={quiz} onAnswer={handleAnswerQuestion} />}
