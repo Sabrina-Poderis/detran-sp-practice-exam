@@ -1,6 +1,6 @@
 interface HeaderProps {
   title: string;
-  description: string;
+  description?: string;
 }
 
 const Header: React.FC<HeaderProps> = ({ title, description }) => {
@@ -26,9 +26,11 @@ const Header: React.FC<HeaderProps> = ({ title, description }) => {
       <h1 className="text-4xl font-bold mb-6 text-gray-800 dark:text-white">
         {renderTitleWithMarks(title)}
       </h1>
-      <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-        {description}
-      </p>
+      {description && (
+        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+          {description}
+        </p>
+      )}
     </header>
   );
 };

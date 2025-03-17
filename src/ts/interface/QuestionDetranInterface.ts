@@ -2,6 +2,9 @@ import QuestionOptionsEnum from "../enum/QuestionOptionsEnum";
 import QuestionTypeEnum from "../enum/QuestionTypeEnum";
 
 export default interface QuestionDetranInterface {
+  _id?: {
+    $oid?: string;
+  },
   id: number;
   question: string;
   options: {
@@ -12,5 +15,5 @@ export default interface QuestionDetranInterface {
   };
   answer: QuestionOptionsEnum;
   type: QuestionTypeEnum;
-  checked?: boolean;
+  verified?: boolean;
 }

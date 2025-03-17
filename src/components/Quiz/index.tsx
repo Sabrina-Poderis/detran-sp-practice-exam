@@ -85,10 +85,10 @@ const Quiz: React.FC<QuizProps> = ({ quiz, onAnswer }) => {
   const selectedAnswer = selectedAnswers[currentQuestionId] || null;
 
   return (
-    <div className="mx-auto mt-[100px] max-w-3xl rounded-md border border-[#444444] bg-[#1e293b] px-[60px] py-[30px]">
+    <div className="mx-auto max-w-3xl rounded-md border border-[#444444] bg-[#1e293b] px-[60px] py-[30px]">
       <div className="flex items-center justify-between">
         <div>
-          <span className="text-4xl font-medium text-[#38bdf8]">
+          <span className="text-xl font-medium text-[#38bdf8]">
             {addLeadingZero(activeQuestionIndex + 1)}
           </span>
           <span className="text-[22px] font-medium text-[#817a8e]">
@@ -105,7 +105,7 @@ const Quiz: React.FC<QuizProps> = ({ quiz, onAnswer }) => {
           </div>
         )}
       </div>
-      <h3 className="my-4 text-2xl font-medium">{currentQuestion.question}</h3>
+      <h3 className="my-4 text-lg font-medium text-justify">{currentQuestion.question}</h3>
       <form>
         {(
           Object.keys(currentQuestion.options) as Array<
@@ -141,7 +141,7 @@ const Quiz: React.FC<QuizProps> = ({ quiz, onAnswer }) => {
         <button
           onClick={onClickPrevious}
           disabled={activeQuestionIndex === 0}
-          className="mt-12 min-w-[150px] transform cursor-pointer rounded-lg border border-[#38bdf8] bg-[#38bdf8] px-5 py-1.5 text-lg font-semibold text-white outline-none transition duration-300 ease-in-out hover:scale-105 hover:bg-[#1d4ed8] active:scale-95 active:bg-[#1e40af] disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-800 disabled:text-gray-500 disabled:hover:scale-100"
+          className="mt-6 min-w-[150px] transform cursor-pointer rounded-lg border border-[#38bdf8] bg-[#38bdf8] px-5 py-1.5 text-lg font-semibold text-white outline-none transition duration-300 ease-in-out hover:scale-105 hover:bg-[#1d4ed8] active:scale-95 active:bg-[#1e40af] disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-800 disabled:text-gray-500 disabled:hover:scale-100"
         >
           Anterior
         </button>
@@ -149,7 +149,7 @@ const Quiz: React.FC<QuizProps> = ({ quiz, onAnswer }) => {
         <button
           onClick={onClickNext}
           disabled={activeQuestionIndex === questions.length - 1}
-          className="mt-12 min-w-[150px] transform cursor-pointer rounded-lg border border-[#38bdf8] bg-[#38bdf8] px-5 py-1.5 text-lg font-semibold text-white outline-none transition duration-300 ease-in-out hover:scale-105 hover:bg-[#1d4ed8] active:scale-95 active:bg-[#1e40af] disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-800 disabled:text-gray-500 disabled:hover:scale-100"
+          className="mt-6 min-w-[150px] transform cursor-pointer rounded-lg border border-[#38bdf8] bg-[#38bdf8] px-5 py-1.5 text-lg font-semibold text-white outline-none transition duration-300 ease-in-out hover:scale-105 hover:bg-[#1d4ed8] active:scale-95 active:bg-[#1e40af] disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-800 disabled:text-gray-500 disabled:hover:scale-100"
         >
           Próxima
         </button>

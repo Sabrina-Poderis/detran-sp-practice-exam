@@ -35,7 +35,7 @@ const QuizOption: React.FC<QuizOptionProps> = ({
       />
       <label
         htmlFor={`choice-${questionIndex}`}
-        className="block cursor-pointer rounded-lg border px-4 py-3 text-lg text-white transition-colors duration-300 ease-in-out"
+        className="block cursor-pointer rounded-lg border px-4 py-3 text-md text-left text-white transition-colors duration-300 ease-in-out"
         style={{ borderColor: theme.borderColor, backgroundColor: theme.bgColor }}
       >
         {answerText}

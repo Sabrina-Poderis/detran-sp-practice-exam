@@ -9,9 +9,12 @@ import ToastTypeEnum from '@/components/Toast/ToastTypeEnum';
 import SimulatedExamAnswerInterface from '@/ts/interface/SimulatedExamAnswerInterface';
 import QuestionOptionsEnum from '@/ts/enum/QuestionOptionsEnum';
 import QuizInterface from '@/ts/interface/QuizInterface';
+import QuestionDetranInterface from '@/ts/interface/QuestionDetranInterface';
 
 const SimuladoPage: React.FC = () => {
   const { showToast } = useToast();
+
+  const simulatedExamService = new SimulatedExamService();
 
   const [quiz, setQuiz] = useState<QuizInterface | null>(null);
   const [answers, setAnswers] = useState<SimulatedExamAnswerInterface[]>([]);
@@ -24,25 +27,30 @@ const SimuladoPage: React.FC = () => {
   }, [isQuizStarted]);
 
   const handleStartQuiz = async () => {
-    const response = await SimulatedExamService.startSimulatedExam(40, true);
-    if (response.status === 201) {
+    const response = await simulatedExamService.startExam(40, true);
+    if (response.status === 200 && response.data) {
       setIsQuizStarted(true);
       setQuiz({
         topic: 'SIMULADO',
         totalQuestions: 40,
         totalTime: 3600,
-        questions: response.data,
+        questions: response.data as QuestionDetranInterface[],
       });
     } else {
       showToast(ToastTypeEnum.ERROR, 'Erro ao iniciar o simulado.');
     }
   };
 
-  const handleAnswerQuestion = (questionId: number, answer: QuestionOptionsEnum) => {
+  const handleAnswerQuestion = (
+    questionId: number,
+    answer: QuestionOptionsEnum,
+  ) => {
     if (!quiz) return;
 
     setAnswers((prevAnswers) => {
-      const existingAnswerIndex = prevAnswers.findIndex(a => a.questionId === questionId);
+      const existingAnswerIndex = prevAnswers.findIndex(
+        (a) => a.questionId === questionId,
+      );
       const updatedAnswers = [...prevAnswers];
 
       if (existingAnswerIndex !== -1) {
@@ -57,12 +65,15 @@ const SimuladoPage: React.FC = () => {
 
   const handleSubmitResults = async () => {
     if (answers.length === 0) {
-      showToast(ToastTypeEnum.WARNING, 'Você precisa responder pelo menos uma pergunta antes de enviar.');
+      showToast(
+        ToastTypeEnum.WARNING,
+        'Você precisa responder pelo menos uma pergunta antes de enviar.',
+      );
       return;
     }
 
-    const response = await SimulatedExamService.submitSimulatedExam(answers);
-    if (response.status === 201) {
+    const response = await simulatedExamService.submitExam(answers);
+    if (response.status === 200) {
       showToast(ToastTypeEnum.SUCCESS, 'Resultado enviado com sucesso!');
     } else {
       showToast(ToastTypeEnum.ERROR, 'Erro ao enviar o resultado.');
@@ -70,22 +81,21 @@ const SimuladoPage: React.FC = () => {
   };
 
   return (
-    <div className="relative z-10 bg-white dark:bg-gray-900 text-gray-900 dark:text-white 
+    <div
+      className="relative z-10 bg-white dark:bg-gray-900 text-gray-900 dark:text-white 
         p-8 shadow-lg flex flex-col items-center justify-center text-center
-        w-full h-screen"
+        min-h-screen w-full overflow-hidden"
     >
-      <div className="flex flex-col items-center justify-center flex-grow">
-        <Header title="Simulado Detran SP" description="Teste seus conhecimentos com este simulado." />
-
-        <div>
-          {quiz && (
-            <Quiz 
-              quiz={quiz}
-              onAnswer={handleAnswerQuestion}
-            />
-          )}
-
-          <Button onClick={handleSubmitResults}>Enviar Resultado</Button>
+      {/* Container com altura de 80% da tela */}
+      <div className="flex flex-col items-center justify-center w-full max-w-3xl px-4 mx-auto min-h-[80vh]">
+        <div className="flex w-full justify-between align-center my-4 h-12">
+          <Header title="Simulado Detran SP" />
+          <div className='w-[240px]'>
+            <Button onClick={handleSubmitResults}>Enviar Resultado</Button>
+          </div>
+        </div>
+        <div className="w-full">
+          {quiz && <Quiz quiz={quiz} onAnswer={handleAnswerQuestion} />}
         </div>
       </div>
     </div>
