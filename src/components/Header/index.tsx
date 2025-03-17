@@ -1,9 +1,12 @@
 interface HeaderProps {
   title: string;
+  size: 'lg' | 'md'
   description?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ title, description }) => {
+const Header: React.FC<HeaderProps> = ({ title, size='lg',description }) => {
+  const titleSize = size === 'lg' ? 'text-4xl' : 'text-2xl'
+
   const renderTitleWithMarks = (text: string) => {
     const parts = text.split(/(\*\*.*?\*\*)/g); // Divide o texto preservando os `**`
 
@@ -23,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ title, description }) => {
 
   return (
     <header className="text-center">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">
+      <h1 className={`${titleSize} font-bold mb-6 text-gray-800 dark:text-white`}>
         {renderTitleWithMarks(title)}
       </h1>
       {description && (

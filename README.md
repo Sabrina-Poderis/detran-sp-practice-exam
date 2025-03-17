@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Detran SP Practice Exam
 
-## Getting Started
+> 🚧 Projeto em desenvolvimento!
 
-First, run the development server:
+A aplicação **Detran SP Practice Exam** foi desenvolvida com o objetivo de simular a prova teórica do Detran. Ela permite que os usuários pratiquem questões oficiais e testem seus conhecimentos sobre **legislação de trânsito**, **direção defensiva**, **primeiros socorros** e **mecânica básica**.
+
+O sistema oferece uma experiência similar à prova oficial, ajudando candidatos a se prepararem de maneira eficaz para o exame teórico do Detran de São Paulo.
+
+## ⚖️ Aviso Legal
+Este projeto é uma iniciativa particular e não possui qualquer vínculo oficial com o **Detran ** ou qualquer outro órgão governamental. As questões utilizadas foram obtidas a partir de fontes de domínio público disponíveis no site oficial do Detran-SP ([link para referência](https://www.detran.sp.gov.br/detran-prova/simulado_questoes/questoes.htm)).
+
+⚠️ Importante: Embora as perguntas e respostas tenham sido extraídas de fontes oficiais, **não garantimos a precisão, atualização ou correção das respostas**. O objetivo deste sistema é **auxiliar ** nos estudos, mas ele não substitui materiais oficiais, cursos ou simulados diretamente aplicados pelo Detran.
+
+Os usuários são encorajados a consultar fontes oficiais para garantir que possuem as informações mais atualizadas e corretas antes de realizar o exame teórico.
+
+---
+
+## 📝 Funcionalidades
+
+- **Questões Oficiais**: Questões extraídas diretamente do conteúdo oficial de provas teóricas.
+- **Simulação de Prova**: Simula a prova teórica do Detran, permitindo que os usuários testem seus conhecimentos.
+- **Categorias de Conhecimento**:
+  - Legislação de Trânsito
+  - Direção Defensiva
+  - Primeiros Socorros
+  - Mecânica Básica
+- **Feedback de Resultados**: Ao final da prova, o usuário recebe um feedback detalhado sobre seu desempenho.
+- **Experiência Similar à Prova Oficial**: A aplicação replica as condições da prova real para proporcionar uma preparação eficaz.
+
+---
+
+## 🛠 Tecnologias Utilizadas
+
+- **Frontend**: React com TypeScript, Next.js, TailwindCSS
+- **Backend**: Node.js, Express, MongoDB
+- **Gerenciador de Estado**: Redux
+- **Formatação e Linting**: ESLint, Prettier
+- **Versionamento de Release**: Standard Version
+
+---
+
+## 📦 Instalação
+
+### Passo 1: Instalar Dependências
+
+Para começar, instale todas as dependências do projeto:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn install`
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Este comando instala as dependências tanto para o frontend quanto para o backend.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔧 Configuração
+Configuração de Aliases de Pasta
+Para garantir uma estrutura modular e de fácil manutenção, o projeto foi configurado com aliases de pasta, permitindo importar componentes, funções e módulos com facilidade. Veja um exemplo de importação usando os aliases configurados:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```typescript
+import Button from '@components/Button';
+import { setQuestions } from '@redux/slices/examSlice';
+```
 
-## Learn More
+### 💡 Como Contribuir
+Se você quiser contribuir com este projeto, sinta-se à vontade para abrir um pull request ou reportar problemas através das issues.
 
-To learn more about Next.js, take a look at the following resources:
+Passos para contribuir:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Faça um fork deste repositório.
+2. Crie uma branch para a sua feature (git checkout -b minha-feature).
+3. Faça suas modificações e commit (git commit -am 'Adiciona nova feature').
+4. Envie para o repositório remoto (git push origin minha-feature).
+5. Abra um Pull Request.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🧑‍💻 Desenvolvedora
+Feito com 💙 por Zabrina.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Licença
+Este projeto é de código aberto e licenciado sob a licença MIT.
