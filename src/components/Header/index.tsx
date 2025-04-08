@@ -1,6 +1,6 @@
 interface HeaderProps {
   title: string;
-  size: 'lg' | 'md'
+  size?: 'lg' | 'md'
   description?: string;
 }
 

@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import SimulatedExamService from '@/services/SimulatedExamService';
 import Header from '@/components/Header';
 import Quiz from '@/components/Quiz';
@@ -12,6 +13,7 @@ import QuizInterface from '@/ts/interface/QuizInterface';
 import QuestionDetranInterface from '@/ts/interface/QuestionDetranInterface';
 
 const SimuladoPage: React.FC = () => {
+  const router = useRouter();
   const { showToast } = useToast();
 
   const simulatedExamService = new SimulatedExamService();
@@ -71,14 +73,18 @@ const SimuladoPage: React.FC = () => {
       );
       return;
     }
-
+  
     const response = await simulatedExamService.submitExam(answers);
-    if (response.status === 200) {
-      showToast(ToastTypeEnum.SUCCESS, 'Resultado enviado com sucesso!');
+  
+    if (response.status === 200 && response.data) {
+      // Redirecionar para a tela de resultado com score e total
+      const { score } = response.data;
+      router.push(`/resultado?score=${score}&total=${40}`);
     } else {
       showToast(ToastTypeEnum.ERROR, 'Erro ao enviar o resultado.');
     }
   };
+  
 
   return (
     <div
